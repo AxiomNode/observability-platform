@@ -1,0 +1,20 @@
+name: Validate Observability Layout
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate-layout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify observability folders
+        run: |
+          test -d stack
+          test -d dashboards
+          test -d alerts
