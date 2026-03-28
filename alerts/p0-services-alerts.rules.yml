@@ -1,0 +1,71 @@
+groups:
+  - name: axiomnode-p0-services
+    rules:
+      - alert: AxiomNodeHighErrorRateEdge
+        expr: |
+          (
+            sum(rate(errors_total{service=~"api-gateway|bff-backoffice|bff-mobile"}[5m]))
+            /
+            clamp_min(sum(rate(requests_total{service=~"api-gateway|bff-backoffice|bff-mobile"}[5m])), 0.001)
+          ) > 0.02
+        for: 10m
+        labels:
+          severity: critical
+          team: platform
+          layer: edge-bff
+        annotations:
+          summary: "Error rate elevado en edge/BFF"
+          description: "La tasa de errores 5xx supera 2% durante 10m en api-gateway o BFFs."
+          runbook: "ai-engine/docs/operations/incident-runbook.md"
+
+      - alert: AxiomNodeHighLatencyEdgeP95
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum by (le, service) (
+              rate(latency_ms_bucket{service=~"api-gateway|bff-backoffice|bff-mobile"}[10m])
+            )
+          ) > 1500
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+          layer: edge-bff
+        annotations:
+          summary: "Latencia p95 elevada en edge/BFF"
+          description: "latency_ms_bucket p95 supera 1500ms por mas de 10m."
+          runbook: "ai-engine/docs/operations/incident-runbook.md"
+
+      - alert: AxiomNodeQuizGenerationFailureRateHigh
+        expr: |
+          (
+            rate(microservice_generated_failed_total[10m])
+            /
+            clamp_min(rate(microservice_outbound_requests_total[10m]), 0.001)
+          ) > 0.4
+        for: 15m
+        labels:
+          severity: critical
+          team: games
+          layer: microservice-quiz
+        annotations:
+          summary: "Failure ratio alto en quiz"
+          description: "La tasa de fallos de generacion de quiz supera 40% en 15m."
+          runbook: "ai-engine/docs/operations/incident-runbook.md"
+
+      - alert: AxiomNodeWordpassDuplicateRatioHigh
+        expr: |
+          (
+            rate(microservice_generated_duplicate_total[15m])
+            /
+            clamp_min(rate(microservice_outbound_requests_total[15m]), 0.001)
+          ) > 0.25
+        for: 15m
+        labels:
+          severity: warning
+          team: games
+          layer: microservice-wordpass
+        annotations:
+          summary: "Duplicate ratio alto en wordpass"
+          description: "La proporcion de duplicados en wordpass supera 25% durante 15m."
+          runbook: "ai-engine/docs/operations/incident-runbook.md"
