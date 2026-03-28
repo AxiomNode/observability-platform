@@ -69,3 +69,16 @@ groups:
           summary: "Duplicate ratio alto en wordpass"
           description: "La proporcion de duplicados en wordpass supera 25% durante 15m."
           runbook: "ai-engine/docs/operations/incident-runbook.md"
+
+      - alert: AxiomNodeAIServicesDown
+        expr: |
+          min_over_time(up{job=~"ai-engine-api|ai-engine-stats"}[5m]) < 1
+        for: 5m
+        labels:
+          severity: critical
+          team: ai-platform
+          layer: ai-engine
+        annotations:
+          summary: "Servicios AI no disponibles"
+          description: "ai-engine-api o ai-engine-stats sin disponibilidad continua durante al menos 5m."
+          runbook: "docs/operations/ai-services-recovery-runbook.md"
