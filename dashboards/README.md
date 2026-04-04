@@ -1,3 +1,3 @@
 # Dashboards
 
-Dashboards por servicio y por dominio de negocio.
+Dashboards by service and business domain.

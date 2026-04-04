@@ -1,18 +1,18 @@
 # Alerts
 
-Reglas de alertado y umbrales operativos.
+Alert rules and operational thresholds.
 
-## Reglas P0 activas
+## Active P0 rules
 
 - `p0-services-alerts.rules.yml`
 
-Cobertura incluida:
+Coverage includes:
 
-- error rate alto en edge/BFF,
-- latencia p95 elevada en edge/BFF,
-- failure ratio de generacion en quiz,
-- duplicate ratio elevado en wordpass.
+- high error rate in edge/BFF,
+- high p95 latency in edge/BFF,
+- quiz generation failure ratio,
+- wordpass duplicate ratio.
 
-Runbook asociado:
+Related runbook:
 
 - `ai-engine/docs/operations/incident-runbook.md`

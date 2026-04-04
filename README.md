@@ -1,19 +1,21 @@
 # observability-platform
 
-Plataforma de observabilidad para servicios AxiomNode.
+Observability assets for AxiomNode services.
 
-## Objetivo
+## Scope
 
-- Definir stack de metricas, logs y trazas.
-- Mantener dashboards operativos por dominio.
-- Gestionar alertas y runbooks de respuesta.
+- Baseline stack definitions for metrics, logs, and tracing.
+- Dashboard packs by domain and service.
+- Alerting rules and operational thresholds.
 
-## Estructura
+## Structure
 
-- `stack/`: componentes base de observabilidad.
-- `dashboards/`: vistas operativas.
-- `alerts/`: reglas y umbrales de alertado.
+- `stack/`: core observability components.
+- `dashboards/`: service and business dashboards.
+- `alerts/`: alert rules and severity mapping.
 
-## CI
+## Workflow
 
-Incluye `validate-observability.yml` para validar layout minimo.
+- `validate-observability.yml`
+	- Trigger: push (`main`, `develop`), pull request, manual dispatch.
+	- Purpose: validates repository layout and required observability folders.

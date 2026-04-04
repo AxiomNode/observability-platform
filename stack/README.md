@@ -1,3 +1,3 @@
 # Observability Stack
 
-Componentes base de observabilidad (metricas, logs, traces).
+Base observability components (metrics, logs, and traces).
