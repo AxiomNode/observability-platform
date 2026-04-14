@@ -18,4 +18,4 @@ Observability assets for AxiomNode services.
 
 - `validate-observability.yml`
 	- Trigger: push (`main`, `develop`), pull request, manual dispatch.
-	- Purpose: validates repository layout and required observability folders.
+	- Purpose: validates repository layout and checks alert rule files for valid YAML structure (`groups`, `rules`, `alert`, `expr`).

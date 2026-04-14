@@ -21,3 +21,51 @@ jobs:
           test -d stack
           test -d dashboards
           test -d alerts
+    - name: Install validation dependencies
+    run: python -m pip install --disable-pip-version-check pyyaml
+    - name: Validate alert rule files
+    run: |
+      python - <<'PY'
+      from pathlib import Path
+      import sys
+      import yaml
+
+      alerts_dir = Path("alerts")
+      rule_files = sorted(alerts_dir.glob("*.rules.yml"))
+      if not rule_files:
+        raise SystemExit("No alert rule files found in alerts/")
+
+      for rule_file in rule_files:
+        with rule_file.open("r", encoding="utf-8") as handle:
+          payload = yaml.safe_load(handle)
+
+        if not isinstance(payload, dict):
+          raise SystemExit(f"{rule_file}: expected top-level mapping")
+
+        groups = payload.get("groups")
+        if not isinstance(groups, list) or not groups:
+          raise SystemExit(f"{rule_file}: missing non-empty groups list")
+
+        for group in groups:
+          if not isinstance(group, dict):
+            raise SystemExit(f"{rule_file}: each group must be a mapping")
+
+          name = group.get("name")
+          rules = group.get("rules")
+          if not isinstance(name, str) or not name.strip():
+            raise SystemExit(f"{rule_file}: each group requires a non-empty name")
+          if not isinstance(rules, list) or not rules:
+            raise SystemExit(f"{rule_file}: group {name!r} requires a non-empty rules list")
+
+          for rule in rules:
+            if not isinstance(rule, dict):
+              raise SystemExit(f"{rule_file}: each rule in group {name!r} must be a mapping")
+            alert = rule.get("alert")
+            expr = rule.get("expr")
+            if not isinstance(alert, str) or not alert.strip():
+              raise SystemExit(f"{rule_file}: each rule in group {name!r} requires a non-empty alert")
+            if not isinstance(expr, str) or not expr.strip():
+              raise SystemExit(f"{rule_file}: rule {alert!r} in group {name!r} requires a non-empty expr")
+
+      print(f"Validated {len(rule_files)} alert rule file(s).")
+      PY
