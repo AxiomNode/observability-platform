@@ -1,0 +1,145 @@
+{
+  "title": "AI engine LLMOps",
+  "uid": "ai-engine-llmops",
+  "schemaVersion": 38,
+  "version": 1,
+  "tags": ["ai-engine", "llmops", "adr-0009"],
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": { "text": "Prometheus", "value": "Prometheus" }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "LLM latency (avg, p95)",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "fieldConfig": { "defaults": { "unit": "s" } },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "ai_engine_llm_latency_seconds",
+          "legendFormat": "avg"
+        },
+        {
+          "refId": "B",
+          "expr": "ai_engine_llm_latency_p95_seconds",
+          "legendFormat": "p95"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Fallbacks total",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "ai_engine_llm_fallback_total"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Errors total (kind=generation)",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 1 }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "ai_engine_llm_errors_total{kind=\"generation\"}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Approx tokens per direction",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "ai_engine_llm_tokens_total{direction=\"in\"}",
+          "legendFormat": "in"
+        },
+        {
+          "refId": "B",
+          "expr": "ai_engine_llm_tokens_total{direction=\"out\"}",
+          "legendFormat": "out"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Success rate",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "fieldConfig": {
+        "defaults": { "unit": "percentunit", "min": 0, "max": 1 }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "ai_engine_success_rate"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Retry rate",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "fieldConfig": {
+        "defaults": { "unit": "percentunit", "min": 0, "max": 1 }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "ai_engine_retry_rate"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "table",
+      "title": "Calls by game type",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "ai_engine_game_type_calls",
+          "instant": true,
+          "format": "table"
+        }
+      ]
+    }
+  ]
+}
