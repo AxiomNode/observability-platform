@@ -1,6 +1,12 @@
 # Alerts
 
+Last updated: 2026-05-03.
+
+## Purpose
+
 Alert rules and operational thresholds.
+
+## Scope
 
 ## Active P0 rules
 

@@ -1,14 +1,18 @@
 # observability-platform
 
+Last updated: 2026-05-03.
+
 Observability assets for AxiomNode services.
 
-## Scope
+## Responsibility
 
 - Baseline stack definitions for metrics, logs, and tracing.
 - Dashboard packs by domain and service.
 - Alerting rules and operational thresholds.
 
-## Ownership boundary
+## Runtime role
+
+### Ownership boundary
 
 This repository owns shared observability assets for the platform.
 
@@ -20,24 +24,38 @@ It should document:
 
 It should not restate per-service metrics semantics that belong in the owning service repositories.
 
-## Structure
+## Runtime surface
+
+### Structure
 
 - `stack/`: core observability components.
 - `dashboards/`: service and business dashboards.
 - `alerts/`: alert rules and severity mapping.
 
-## Main consumers
+### Main consumers
 
 - operators using `backoffice`
 - platform operators validating staging or production health
 - incident workflows described in the central `docs` repository
 
-## Workflow
+## Local setup
+
+### Workflow
 
 - `validate-observability.yml`
 	- Trigger: push (`main`, `develop`), pull request, manual dispatch.
 	- Purpose: validates repository layout and checks alert rule files for valid YAML structure (`groups`, `rules`, `alert`, `expr`).
 
-## Documentation scope
+## Documentation
+
+- `stack/README.md`
+- `dashboards/README.md`
+- `alerts/README.md`
+
+## Deployment and operations notes
+
+### Documentation scope
 
 Keep this repository documentation concrete about stacks, dashboards, alert assets, and repository-local validation. Cross-repository incident process belongs in the central `docs` repository.
+
+## References

@@ -1,6 +1,12 @@
 # Dashboards
 
+Last updated: 2026-05-03.
+
+## Purpose
+
 Dashboards by service and business domain.
+
+## Scope
 
 ## Available
 
