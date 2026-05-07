@@ -1,6 +1,6 @@
 # observability-platform
 
-Last updated: 2026-05-03.
+Last updated: 2026-05-08.
 
 Observability assets for AxiomNode services.
 
@@ -15,6 +15,8 @@ Observability assets for AxiomNode services.
 ### Ownership boundary
 
 This repository owns shared observability assets for the platform.
+
+Current platform status: Backoffice diagnostics, service metrics, AI stats, and staging smoke evidence are the primary operational surfaces. This repository keeps reusable dashboard and alert assets aligned with those runtime signals.
 
 It should document:
 
