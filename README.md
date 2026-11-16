@@ -45,7 +45,7 @@ It should not restate per-service metrics semantics that belong in the owning se
 ### Workflow
 
 - `validate-observability.yml`
-	- Trigger: push (`main`, `develop`), pull request, manual dispatch.
+	- Trigger: push (`main`), pull request, manual dispatch.
 	- Purpose: validates repository layout and checks alert rule files for valid YAML structure (`groups`, `rules`, `alert`, `expr`).
 
 ## Documentation
